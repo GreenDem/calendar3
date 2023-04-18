@@ -1,68 +1,73 @@
 // ANIMATION ON MOUSEOVER
-
+const showEvent = document.getElementById('showEvent')
+console.log(showEvent)
 let calendars = document.querySelectorAll('.cal')
-calendars.forEach(calendar => {
-    calendar.addEventListener('mouseover', () => {
-        calendar.style.scale = '1.2';
-        calendar.style.zIndex = '4';
-        calendar.style.height= '150px'
-    });
-    calendar.addEventListener('mouseout', () => {
-        calendar.style.scale = '1';
-        calendar.style.zIndex = '0';
-        calendar.style.height= '13%'
-    });
-});
+// calendars.forEach(calendar => {
 
 
-// LOCAL STORAGE
+    // LOCAL STORAGE
 
-let eventTitle = document.getElementById('eventTitle');
-let eventDate = document.getElementById('eventDate');
-let eventDescription = document.getElementById('eventDescription');
-let eventForm = document.getElementById('eventForm');
-let containers = document.querySelectorAll('container');
-let calendarEvent;
-let calendarcompare = []
-
-
-if (localStorage.getItem('calendarEvent')) {
-    calendarEvent = JSON.parse(localStorage.getItem("calendarEvent"))
-} else {
-    calendarEvent = []
-}
-
-window.addEventListener('load', () => {
-    eventDisplay() }
-)
-
-function eventDisplay (){
-calendars.forEach(calendar => {
-    let results = calendarEvent.filter(obj => {
-        return obj.date === calendar.dataset.divdate
-      })
-      //if tableau vide ne rien faire
-    //   calendar.innerHTML= result.title
-    console.log(results)
-    results.forEach(result => {
-        calendar.innerHTML+= `<h2>${result.title}</h2>  <P>${result.description}</p>`
-
-    })
-});
-}
+    let eventTitle = document.getElementById('eventTitle');
+    let eventDate = document.getElementById('eventDate');
+    let eventDescription = document.getElementById('eventDescription');
+    let eventForm = document.getElementById('eventForm');
+    let containers = document.querySelectorAll('container');
+    let calendarEvent;
+    let calendarcompare = []
 
 
-console.log(calendarcompare)
+    if (localStorage.getItem('calendarEvent')) {
+        calendarEvent = JSON.parse(localStorage.getItem("calendarEvent"))
+    } else {
+        calendarEvent = []
+    }
 
-console.log(calendarEvent)
+    window.addEventListener('load', () => {
+        eventDisplay()
+    }
+    )
 
+    function eventDisplay() {
+        calendars.forEach(calendar => {
+            let results = calendarEvent.filter(obj => {
+                return obj.date === calendar.dataset.divdate
+            })
+            //if tableau vide ne rien faire
+            //   calendar.innerHTML= result.title
+            results.forEach(result => {
+                calendar.setAttribute("data-title", `"${result.title}"`)
+                calendar.setAttribute("data-description", `"${result.description}"`)
+                calendar.style.color= "aqua"
+
+                calendar.addEventListener('mouseover', (e) => {
+                    calendar.style.scale = '1.2';
+                    calendar.style.zIndex = '4';
+                    console.log(calendar)
+                    showEvent.classList.remove('displayNone')
+                    showEvent.innerHTML = `<div><h3>${result.title}</h3><p>${result.description}</p></div`
+                    console.log(showEvent)
+
+                });
+                calendar.addEventListener('mouseout', () => {
+                    calendar.style.scale = '1';
+                    calendar.style.zIndex = '0';
+                    showEvent.classList.add('displayNone')
+                    showEvent.innerHTML = ``
+
+                });
+            });
+
+
+
+
+            // innerHTML+= `<h2>${result.title}</h2>  <P>${result.description}</p>`
+        })
+    };
 
 
 
 eventForm.addEventListener("submit", (e) => {
-                             // event sur le bouton du formulaire 
     formValidation();
-                           // appel de la fonction formValidation
 });
 
 
